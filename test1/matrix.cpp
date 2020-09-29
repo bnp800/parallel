@@ -132,7 +132,7 @@ void mult(T& a,T& b,T& c,int mode)
 	}
 }
 template<class T>
-FREE(T& mat)
+void FREE(T& mat)
 {
 	for(int i = 0;i < mat.size_x;i++)
 		delete [] mat.elem[i];
