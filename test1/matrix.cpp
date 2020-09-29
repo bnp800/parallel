@@ -27,37 +27,43 @@ char command_parser(int num,char** command)
 	if((mode < 0) || (mode > 5))
 		throw "invalid index mode";
 	ifstream in;
-	in.open(command[1]);
+	in.open(command[1],ios::binary);
 	char type;
-	in >> type;
+	in.read((char*)&type,sizeof(char));
 	in.close();
 	return type;
 }
 void rff_d(char* name,mat_d& in)
 {
 	ifstream ifile;
-	ifile.open(name);
-	ifile >> in.type >> in.size_x >> in.size_y;
+	ifile.open(name,ios::binary);
+	//ifile >> in.type >> in.size_x >> in.size_y;
+	ifile.read((char*)&in.type,sizeof(char));
+	ifile.read((char*)&in.size_x,sizeof(int));
+	ifile.read((char*)&in.size_y,sizeof(int));
 	in.elem = new double* [in.size_x];
 		for(int i = 0;i < in.size_x;i++)
 			in.elem[i] = new double [in.size_y];
 	for(int i = 0;i < in.size_x ;i++)
 		for(int j = 0;j < in.size_y;j++)
-			ifile >> in.elem[i][j];
-	ifile.close(); 
+			ifile.read((char*)&in.elem[i][j],sizeof(double));
+	ifile.close();
 }
 void rff_f(char* name,mat_f& in)
 {
 	ifstream ifile;
-	ifile.open(name);
-	ifile >> in.type >> in.size_x >> in.size_y;
+	ifile.open(name,ios::binary);
+	//ifile >> in.type >> in.size_x >> in.size_y;
+	ifile.read((char*)&in.type,sizeof(char));
+	ifile.read((char*)&in.size_x,sizeof(in.size_x));
+	ifile.read((char*)&in.size_y,sizeof(in.size_y));
 	in.elem = new float* [in.size_x];
 		for(int i = 0;i < in.size_x;i++)
 			in.elem[i] = new float [in.size_y];
 	for(int i = 0;i < in.size_x ;i++)
 		for(int j = 0;j < in.size_y;j++)
-			ifile >> in.elem[i][j];
-	ifile.close(); 
+			ifile.read((char*)&in.elem[i][j],sizeof(float));
+	ifile.close();
 }
 template<class T>
 void mult(T& a,T& b,T& c,int mode)
@@ -130,7 +136,7 @@ FREE(T& mat)
 {
 	for(int i = 0;i < mat.size_x;i++)
 		delete [] mat.elem[i];
-	delete [] mat.elem;	
+	delete [] mat.elem;
 }
 int main(int argc,char* argv[])
 {
@@ -165,7 +171,7 @@ int main(int argc,char* argv[])
 			c.elem[i] = new double [b.size_y];
 			clock_t start,finish;
 			ofstream out;
-			out.open(argv[3]);
+			out.open(argv[3],ios::binary);
 			double duration;
 			start = clock();
 			mult(a,b,c,mode);
@@ -174,10 +180,10 @@ int main(int argc,char* argv[])
 			for(int i = 0;i < c.size_x ;i++)
 			{
 			for(int j = 0;j < c.size_y;j++)
-				out <<  c.elem[i][j] << " ";
+				out.write((char*)&c.elem[i][j],sizeof(double));
 			out << endl;
 		}
-		out << endl << duration << endl;
+		out.write((char*)&duration,sizeof(int));
 		out.close();
 			FREE(a);
 			FREE(b);
@@ -211,7 +217,7 @@ int main(int argc,char* argv[])
 			c.elem[i] = new float [b.size_y];
 			clock_t start,finish;
 			ofstream out;
-			out.open(argv[3]);
+			out.open(argv[3],ios::binary);
 			double duration;
 			start = clock();
 			mult(a,b,c,mode);
@@ -220,7 +226,7 @@ int main(int argc,char* argv[])
 			for(int i = 0;i < c.size_x ;i++)
 			{
 			for(int j = 0;j < c.size_y;j++)
-				out <<  c.elem[i][j] << " ";
+				out.write((char*)&c.elem[i][j],sizeof(float));
 			out << endl;
 		}
 		out << endl << duration << endl;
@@ -236,4 +242,3 @@ catch(const char* err)
 }
 	return 0;
 }
-
