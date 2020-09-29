@@ -27,7 +27,7 @@ char command_parser(int num,char** command)
 	if((mode < 0) || (mode > 5))
 		throw "invalid index mode";
 	ifstream in;
-	in.open(command[1],ios::binary);
+	in.open(command[1],ios::binary | ios::in);
 	char type;
 	in.read((char*)&type,sizeof(char));
 	in.close();
