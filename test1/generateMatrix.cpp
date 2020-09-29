@@ -13,7 +13,7 @@ int main(int argc,char* argv[])
 	srand(seed);
 	int size_x = 50;
 	int size_y = 50;
-	char c = argv[3][1];
+	char c = argv[3][0];
 	outfile.write((char*)&c,sizeof(char));
 	outfile.write((char*)&size_x,sizeof(int));
 	outfile.write((char*)&size_y,sizeof(int));
