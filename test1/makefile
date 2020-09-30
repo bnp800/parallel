@@ -68,5 +68,4 @@ clean:
 	rm main
 	rm testing
 	rm stats.dat
-	rm stats.pdf
 	rm avg
