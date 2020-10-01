@@ -7,9 +7,9 @@ dst = c.txt
 .PHONY: test run_generateMatrix run_main run_testing
 test: run_generateMatrix run_main run_testing
 
-report: run_test cal_avg run_gnuplot
+report: run_test cal_avg run_gnuplot clean
 
-run_test:test
+run_test:test 
 	for n in $(modelist); do\
 		./generateMatrix $(source1) $(source2) $(type);\
 		./main $(source1) $(source2) $(dst) $$n; \

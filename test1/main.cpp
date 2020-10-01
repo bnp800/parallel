@@ -20,8 +20,11 @@ int main(int argc,char* argv[])
                  c.size_x = a.size_x;
                  c.size_y = b.size_y; 
                  c.elem = new double* [a.size_x];
-                 for(int i = 0;i < a.size_x;i++)
+                 for(int i = 0;i < c.size_x;i++)
                          c.elem[i] = new double [b.size_y];
+		 for(int i = 0;i < c.size_x;i++)
+			 for(int j = 0;j < c.size_y;j++)
+				 c.elem[i][j] = 0;
                          clock_t start,finish;
                          ofstream out;
                          out.open(argv[3],ios::binary);
@@ -34,11 +37,8 @@ int main(int argc,char* argv[])
 			 out.write((char*)&c.size_x,sizeof(int));
 			 out.write((char*)&c.size_y,sizeof(int));
                          for(int i = 0;i < c.size_x ;i++)
-                         {
-                         for(int j = 0;j < c.size_y;j++)
-                                 out.write((char*)&c.elem[i][j],sizeof(double));
-                 }
-		                 
+                 	        for(int j = 0;j < c.size_y;j++)
+                        	         out.write((char*)&c.elem[i][j],sizeof(double));
                  out.close();
 		 ofstream stats("stats.dat",ios::app);
 		 stats << duration << endl;
