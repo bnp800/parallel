@@ -23,14 +23,20 @@ int main(int argc,char** argv)
                  c.elem = new double* [c.size_x];
                  for(int i = 0;i < c.size_x;i++)
                          c.elem[i] = new double [c.size_y];
-		mult(a,b,c,0);
-		for(i = 0;i < c.size_x;i++)
-			for(j = 0;j < c.size_y;j++)
-				if(c.elem[i][j] != d.elem[i][j])
-				{
-					flag = 0;
-					break;
-				}
+		 for(int k = 0;k < 5;k++)
+		 {
+		 	for(int i = 0;i < c.size_x;i++)
+				 for(int j = 0;j < c.size_y;j++)
+					 c.elem[i][j] = 0;
+			mult(a,b,c,k);
+			for(i = 0;i < c.size_x;i++)
+				for(j = 0;j < c.size_y;j++)
+					if((c.elem[i][j] - d.elem[i][j]) > 0.000001)
+					{
+						flag = 0;
+						break;
+					}
+		 }
 		FREE(a);
 		FREE(b);
 		FREE(c);
@@ -48,14 +54,20 @@ int main(int argc,char** argv)
                  c.elem = new float* [c.size_x];
                  for(int i = 0;i < c.size_x;i++)
                          c.elem[i] = new float [c.size_y];
-		mult(a,b,c,0);
+		 for(int k = 0;k < 5;k++)
+		 {
+		 	for(int i = 0;i < c.size_x;i++)
+				 for(int j = 0;j < c.size_y;j++)
+					 c.elem[i][j] = 0;
+		mult(a,b,c,k);
 		for(i = 0;i < c.size_x;i++)
 			for(j = 0;j < c.size_y;j++)
-				if(c.elem[i][j] != d.elem[i][j])
+				if((c.elem[i][j] - d.elem[i][j]) > 0.000001)
 				{
 					flag = 0;
 					break;
 				}
+		 }
 		FREE(a);
 		FREE(b);
 		FREE(c);
