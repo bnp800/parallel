@@ -14,5 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: make
-      run: /test1/ make test
+      working-directory: ./test1
+      run:  make test
 
