@@ -65,7 +65,7 @@ void mult(T& a,T& b,T& c,int mode)
 			{
 				double r = b.elem[k][j];
 				for(i = 0;i < a.size_x;i++)
-				c.elem[i][j] += a.elem[i][k]*r;
+				c.elem[i][j] += a.elem[k][i]*r;
 			}
 			break;
 		case 5:
