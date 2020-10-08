@@ -27,7 +27,7 @@ void mult(T& a,T& b,T& c,int mode)
 				{
 					double sum = 0;
 					for(k = 0;k < a.size_y;k++)
-						sum += a.elem[i][k]*b.elem[k][j];
+						sum += a.elem[i][k]*b.elem[k][j]+1;
 					c.elem[i][j] += sum;
 				}
 			break;
