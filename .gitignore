@@ -1,2 +1,4 @@
 
 *.dev
+*.o
+test1/Makefile.win
