@@ -21,12 +21,12 @@ int main(int argc,char** argv)
                  c.size_x = d.size_x;
                  c.size_y = d.size_y; 
                  c.elem = new double* [c.size_x];
-                 for(int i = 0;i < c.size_x;i++)
+                 for(i = 0;i < c.size_x;i++)
                          c.elem[i] = new double [c.size_y];
 		 for(int k = 0;k < 5;k++)
 		 {
-		 	for(int i = 0;i < c.size_x;i++)
-				 for(int j = 0;j < c.size_y;j++)
+		 	for(i = 0;i < c.size_x;i++)
+				 for(j = 0;j < c.size_y;j++)
 					 c.elem[i][j] = 0;
 			mult(a,b,c,k);
 			for(i = 0;i < c.size_x;i++)
@@ -52,12 +52,12 @@ int main(int argc,char** argv)
                  c.size_x = d.size_x;
                  c.size_y = d.size_y;
                  c.elem = new float* [c.size_x];
-                 for(int i = 0;i < c.size_x;i++)
+                 for(i = 0;i < c.size_x;i++)
                          c.elem[i] = new float [c.size_y];
 		 for(int k = 0;k < 5;k++)
 		 {
-		 	for(int i = 0;i < c.size_x;i++)
-				 for(int j = 0;j < c.size_y;j++)
+		 	for( i = 0;i < c.size_x;i++)
+				 for( j = 0;j < c.size_y;j++)
 					 c.elem[i][j] = 0;
 		mult(a,b,c,k);
 		for(i = 0;i < c.size_x;i++)
