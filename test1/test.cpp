@@ -74,8 +74,14 @@ int main(int argc,char** argv)
 		FREE(d);
 	}
 		if(flag)
+		{
 			cout << "correct" << endl;
+				return 0;
+		}
 		else
+		{
 			cout << "error" << endl;
-	return 0;
+			return -1;
+		}
+
 }
