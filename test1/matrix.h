@@ -33,11 +33,11 @@ void mult(T& a,T& b,T& c,int mode)
 			break;
 		case 1:
 			for(i = 0;i < a.size_x;i++)
-				for(k = 0;k < a.size_y;k++)
+				for(k = 0;k < b.size_y;k++)
 				{
-					double r = a.elem[i][k];
-					for(j = 0;j < b.size_y;j++)
-						c.elem[i][j] += r*b.elem[k][j];
+					double r = b.elem[i][k];
+					for(j = 0;j < a.size_y;j++)
+						c.elem[i][j] += r*a.elem[k][j];
 				}
 				break;
 		case 2:
