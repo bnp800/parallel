@@ -40,8 +40,8 @@ void rff_f(char* name,mat_f& in)
 	ifstream ifile;
 	ifile.open(name,ios::binary);
 	ifile.read((char*)&in.type,sizeof(char));
-	ifile.read((char*)&in.size_x,sizeof(in.size_x));
-	ifile.read((char*)&in.size_y,sizeof(in.size_y));
+	ifile.read((char*)&in.size_x,sizeof(int));
+	ifile.read((char*)&in.size_y,sizeof(int));
 	in.elem = new float* [in.size_x];
 		for(int i = 0;i < in.size_x;i++)
 			in.elem[i] = new float [in.size_y];

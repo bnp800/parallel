@@ -63,10 +63,10 @@ int main(int argc,char** argv)
 		mult(a,b,c,k);
 		for(i = 0;i < c.size_x;i++)
 			for(j = 0;j < c.size_y;j++)
-				if((c.elem[i][j] - d.elem[i][j]) > 0.000001)
+				if(abs(c.elem[i][j] - d.elem[i][j]) > 0.000001)
 				{
 					flag = 0;
-					break;
+				//	break;
 				}
 		 }
 		FREE(a);

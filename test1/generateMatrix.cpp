@@ -4,7 +4,7 @@
 #include<ctime>
 using namespace std;
 
-const int N = 50;
+const int N = 1024;
 int main(int argc,char* argv[])
 {
 	ofstream outfile(argv[1],ios::binary | ios::out);
@@ -27,9 +27,9 @@ int main(int argc,char* argv[])
 		for(int i = 0;i < size_x*size_y;i++)
 		{
 //			num = i;
-			num = rand();
+			num = rand() % 100 + 1;
 			outfile.write((char*)&num,sizeof(double));
-			num = rand();
+			num = rand() % 100 + 1;
 			outfile1.write((char*)&num,sizeof(double));
 		}
 		return 0;
@@ -40,10 +40,10 @@ int main(int argc,char* argv[])
 		for(int i = 0;i < size_x*size_y;i++)
 		{
 //			num = i;
-			num = rand();
+			num = rand() % 100 + 1;
 			outfile.write((char*)&num,sizeof(float));
-			num = rand();
-			outfile.write((char*)&num,sizeof(float));
+			num = rand() % 100 + 1;
+			outfile1.write((char*)&num,sizeof(float));
 		}	
 	}
 
