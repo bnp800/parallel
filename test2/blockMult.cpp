@@ -5,43 +5,41 @@
 #include<unistd.h>
 #include<cmath>
 #include<fstream>
+#include"blockmult.h"
+#include<cstring>
 using namespace std;
 
-#define N 1024
-void blockMult(mat_f &a,mat_f &b1,mat_f &c,int b,int mode)
-{
-    int i,j,k;
-    switch(mode)
-    {
-	case 0:
-	    for(i = 0;i < a.size_x;i+=b)
-		for(j = 0;j < a.size_y;j+=b)
-		    for(k = 0;k < a.size_x;k+=b)
-			for(int i1 = i;i1 < i+b;i1++)
-			    for(int j1 = j;j1 < j+b;j1++)
-				for(int k1 = k;k1 < k+b;k1++)
-				    c.elem[i1][j1] += a.elem[i1][k1]*b1.elem[k1][j1];
-	    break;
-	case 1:
-	    for(i = 0;i < a.size_x;i+=b)
-		for(j = 0;j < a.size_y;j+=b)
-		    for(k = 0;k < a.size_x;k+=b)
-			for(int i1 = i;i1 < i+b;i1++)
-			    for(int k1 = k;k1 < k+b;k1++)
-				for(int j1 = j;j1 < j+b;j1++)
-				    c.elem[i1][j1] += a.elem[i1][k1]*b1.elem[k1][j1];
-	    break;
-	default:
-	    break;
-    }
-
-}
-int powf2(double b)
+#define N 2048
+int min2(double b)
 {
     int n = 2;
     if(n <= b)
 	n *= 2;
     return n;
+}
+void stats(int mode,long long* counters,long long begin_time,long long end_time)
+{
+    ofstream out,out1,out2,out3,out4,out5;
+    out.open("stats_time.dat" , ios::app);
+    out1.open("stats_L1_miss_rate.dat" , ios::app);
+    out2.open("stats_L2_miss_rate.dat" , ios::app);
+    out3.open("stats_cycles.dat" , ios::app);
+    out4.open("stats_FLOP.dat" , ios::app);
+    out5.open("stats_TLB.dat" , ios:: app);
+
+    out << mode << " " << (double)(end_time - begin_time) / 1000 << endl;
+    out1 << mode << " " << (double)counters[1] / (double)counters[2] << endl;
+    out2 << mode << " " << (double)counters[3] / (double)counters[4] << endl;
+    out3 << mode << " " << counters[0] << endl;
+    out4 << mode << " " << counters[5] << endl;
+    out5 << mode << " " << counters[6]<< endl;
+	out.close();
+	out1.close();
+	out2.close();
+	out3.close();
+	out4.close();
+	out5.close();
+
 }
 void output(mat_f& c,char* name)
 {
@@ -58,7 +56,10 @@ void output(mat_f& c,char* name)
 }
 int main(int argc,char* argv[])
 {
-    int retval,EventSet = PAPI_NULL;
+    int retval;
+    int PAPI_EVENTS[] = {PAPI_TOT_CYC,PAPI_L1_DCM,PAPI_L1_DCA,PAPI_L2_DCM,PAPI_L2_DCA,PAPI_FP_OPS,PAPI_TLB_DM};
+    long long counters[7];
+    long long begin_time,end_time;
     PAPI_event_info_t info;
     retval = PAPI_library_init(PAPI_VER_CURRENT);
 
@@ -67,11 +68,12 @@ int main(int argc,char* argv[])
 	cerr << "PAPI library ini error" << endl;
 	exit(1);
     }
+
     mat_f a,b,c;
-    int mode = atoi(argv[4]);
+    int mode  = atoi(argv[4]);
     int bb = 32;
-    //double bb = sqrt(sysconf(_SC_LEVEL1_DCACHE_SIZE) / sysconf(_SC_LEVEL1_DCACHE_ASSOC)/3);
-    //(int)bb = powf2(bb);
+  //  int bb = sqrt(sysconf(_SC_LEVEL1_DCACHE_SIZE) / sysconf(_SC_LEVEL1_DCACHE_ASSOC)/3);
+   // bb = min2(bb);
     rff_f(argv[1],a);
     rff_f(argv[2],b);
     c.size_x = c.size_y = N;
@@ -81,7 +83,13 @@ int main(int argc,char* argv[])
 	for(int i = 0;i < N;i++)
 	    for(int j = 0;j < N;j++)
 		c.elem[i][j] = 0;
+
+	int init = PAPI_start_counters(PAPI_EVENTS,7);
+	begin_time = PAPI_get_real_usec();
     blockMult(a,b,c,bb,mode);
+	end_time = PAPI_get_real_usec();
+    PAPI_read_counters(counters,7);
+	stats(mode,counters,begin_time,end_time);
     output(c,argv[3]);
     FREE(a);
     FREE(b);

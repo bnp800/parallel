@@ -40,7 +40,7 @@ run_gnuplot: stats.p
 	gnuplot stats.p
 
 cal_avg: stats.dat avg
-	./avg 
+	./avg stat.dat 
 
 avg: avg.cpp
 	g++ avg.cpp -o avg

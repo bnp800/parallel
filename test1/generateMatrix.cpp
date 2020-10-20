@@ -4,7 +4,7 @@
 #include<ctime>
 using namespace std;
 
-const int N = 1024;
+const int N = 2048;
 int main(int argc,char* argv[])
 {
 	ofstream outfile(argv[1],ios::binary | ios::out);
