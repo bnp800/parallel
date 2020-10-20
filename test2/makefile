@@ -1,19 +1,19 @@
-mode = 0;
+mode = 1;
 MAKE = make
-
+DIR = ../test1/
 all: run test clean
 
 run: main run_generator
-	./main ../test1/a.txt ../test1/b.txt ../test/c.txt $(mode)
+	./main $(DIR)a.txt $(DIR)b.txt $(DIR)c.txt $(mode)
 
 main: blockMult.cpp ../test1/matrix.cpp
-	g++ blockMult.cpp ../test1/matrix.cpp -o main -lpapi
+	g++ blockMult.cpp $(DIR)matrix.cpp -o main -lpapi
 
 run_generator:
-	cd ../test1/ && $(MAKE) run_generateMatrix
+	cd $(DIR) && $(MAKE) run_generateMatrix
 
 test: ../test1/makefile
-	cd ../test1/ && $(MAKE) run_testing
+	cd $(DIR) && $(MAKE) run_testing
 
 clean:
 	rm ./main

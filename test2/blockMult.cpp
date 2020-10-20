@@ -45,8 +45,10 @@ int powf2(double b)
 }
 void output(mat_f& c,char* name)
 {
+    char type = 'f';
     ofstream out;
     out.open(name,ios::binary);
+    out.write((char*)&type,sizeof(char));
     out.write((char*)&c.size_x,sizeof(int));
     out.write((char*)&c.size_y,sizeof(int));
     for(int i = 0;i < N;i++)
