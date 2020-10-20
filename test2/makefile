@@ -13,7 +13,7 @@ run_generator:
 	cd ../test1/ && $(MAKE) run_generateMatrix
 
 test: ../test1/makefile
-	cd ../test1/ && $(MAKE) test
+	cd ../test1/ && $(MAKE) run_testing
 
 clean:
 	rm ./main

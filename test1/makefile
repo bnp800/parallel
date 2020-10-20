@@ -69,3 +69,4 @@ clean:
 	rm testing
 	rm stats.dat
 	rm avg
+	rm *.txt

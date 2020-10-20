@@ -66,7 +66,7 @@ int main(int argc,char** argv)
 				if(abs(c.elem[i][j] - d.elem[i][j]) > 0.000001)
 				{
 					flag = 0;
-				//	break;
+					break;
 				}
 		 }
 		FREE(a);
