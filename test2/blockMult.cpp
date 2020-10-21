@@ -71,9 +71,9 @@ int main(int argc,char* argv[])
 
     mat_f a,b,c;
     int mode  = atoi(argv[4]);
-    int bb = 32;
-  //  int bb = sqrt(sysconf(_SC_LEVEL1_DCACHE_SIZE) / sysconf(_SC_LEVEL1_DCACHE_ASSOC)/3);
-   // bb = min2(bb);
+//    int bb = 32;
+    int bb = sqrt(sysconf(_SC_LEVEL1_DCACHE_SIZE) / sysconf(_SC_LEVEL1_DCACHE_ASSOC)/3);
+	 bb = min2(bb);
     rff_f(argv[1],a);
     rff_f(argv[2],b);
     c.size_x = c.size_y = N;

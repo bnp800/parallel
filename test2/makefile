@@ -14,7 +14,7 @@ avg.cpp = avg.cpp
 avg.o = avg
 run_num = 5
 
-report: stats avg draw clean
+report: stats avg draw 
 avg: com_avg
 	for n in $(stlist); do \
 	$(DIR)$(avg.o) $(st)$$n$(sts) $(run_num); \
