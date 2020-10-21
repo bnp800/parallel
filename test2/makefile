@@ -12,10 +12,12 @@ stlist = time L1_miss_rate L2_miss_rate cycles FLOP TLB
 sts = .dat
 avg.cpp = avg.cpp
 avg.o = avg
-report: stats avg draw
+run_num = 5
+
+report: stats avg draw clean
 avg: com_avg
 	for n in $(stlist); do \
-	$(DIR)$(avg.o) $(dir)$(st)$$n$(sts); \
+	$(DIR)$(avg.o) $(st)$$n$(sts) $(run_num); \
 	done
 
 com_avg:
@@ -24,13 +26,8 @@ com_avg:
 draw:
 	gnuplot plot.p
 
-stats: main 
+stats: main run_generator
 	for n in $(modelist); do \
-	./main $(DIR)$(src1) $(DIR)$(src2) $(DIR)$(dst) $$n; \
-	./main $(DIR)$(src1) $(DIR)$(src2) $(DIR)$(dst) $$n; \
-	./main $(DIR)$(src1) $(DIR)$(src2) $(DIR)$(dst) $$n; \
-	./main $(DIR)$(src1) $(DIR)$(src2) $(DIR)$(dst) $$n; \
-	./main $(DIR)$(src1) $(DIR)$(src2) $(DIR)$(dst) $$n; \
 	./main $(DIR)$(src1) $(DIR)$(src2) $(DIR)$(dst) $$n; \
 	./main $(DIR)$(src1) $(DIR)$(src2) $(DIR)$(dst) $$n; \
 	./main $(DIR)$(src1) $(DIR)$(src2) $(DIR)$(dst) $$n; \

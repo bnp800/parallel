@@ -27,10 +27,10 @@ set terminal svg size 600,500
 set output "FLOP_32.svg"
 set title "FLOP_32"
 set ylabel 'FLOPS'
-plot 'stats_FLOP.dat'
+plot 'stats_FLOP.dat' with line
 
 set terminal svg size 600,500
-set output "TLB_32.avg"
+set output "TLB_32.svg"
 set title "TLB_32"
 set ylabel 'TLB access'
 plot 'stats_TLB.dat' with line

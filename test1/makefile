@@ -4,6 +4,7 @@ modelist = 0 1 2 3 4 5
 source1 = a.txt
 source2 = b.txt
 dst = c.txt
+testnum = 10
 .PHONY: test run_generateMatrix run_main run_testing
 test: run_generateMatrix run_main run_testing
 
@@ -40,7 +41,7 @@ run_gnuplot: stats.p
 	gnuplot stats.p
 
 cal_avg: stats.dat avg
-	./avg stat.dat 
+	./avg stat.dat 10 
 
 avg: avg.cpp
 	g++ avg.cpp -o avg

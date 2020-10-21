@@ -59,6 +59,9 @@ int main(int argc,char* argv[])
                  c.elem = new float* [a.size_x];
                  for(int i = 0;i < a.size_x;i++)
                          c.elem[i] = new float [b.size_y];
+		 for(int i = 0;i < c.size_x;i++)
+			 for(int j = 0;j < c.size_y;j++)
+				 c.elem[i][j] = 0;
                          clock_t start,finish;
                          ofstream out;
                          out.open(argv[3],ios::binary);

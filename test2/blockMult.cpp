@@ -9,7 +9,7 @@
 #include<cstring>
 using namespace std;
 
-#define N 2048
+#define N 1024
 int min2(double b)
 {
     int n = 2;
@@ -27,12 +27,12 @@ void stats(int mode,long long* counters,long long begin_time,long long end_time)
     out4.open("stats_FLOP.dat" , ios::app);
     out5.open("stats_TLB.dat" , ios:: app);
 
-    out << mode << " " << (double)(end_time - begin_time) / 1000 << endl;
-    out1 << mode << " " << (double)counters[1] / (double)counters[2] << endl;
-    out2 << mode << " " << (double)counters[3] / (double)counters[4] << endl;
-    out3 << mode << " " << counters[0] << endl;
-    out4 << mode << " " << counters[5] << endl;
-    out5 << mode << " " << counters[6]<< endl;
+    out << (double)(end_time - begin_time) / 1000 << endl;
+    out1 << (double)counters[1] / (double)counters[2] << endl;
+    out2 << (double)counters[3] / (double)counters[4] << endl;
+    out3 << counters[0] << endl;
+    out4 << counters[5] << endl;
+    out5 << counters[6]<< endl;
 	out.close();
 	out1.close();
 	out2.close();
