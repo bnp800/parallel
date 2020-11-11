@@ -1,4 +1,4 @@
-num = 1 2 3 4 5 6 7 8
+num = 1 2 4 8 16
 begin = 1
 end = 100000
 dst = primes.txt
@@ -15,7 +15,7 @@ draw: plot.p
 	gnuplot plot.p
 
 run: prime
-	mpirun -np 4 ./prime 1 100000 primes.txt
+	mpirun -np 16 ./prime 1 100000 primes.txt
 prime: prime.c
 	mpicc prime.c -o prime -lm
 clean:

@@ -189,7 +189,10 @@ int main(int argc, char* argv[])
     free(is_prime);
     MPI_Finalize();
 
-    return 0;
+if(myrank != 0)
+    exit(0);
+else
+return 0;
 
 }
 
