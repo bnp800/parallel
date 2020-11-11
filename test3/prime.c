@@ -16,6 +16,8 @@ int main(int argc, char* argv[])
 {
 
     int n,l,         
+	mycount = 0,
+	totalcount = 0,
 	myrank,     
 	task_num,   
 	partion_size,       
@@ -50,18 +52,22 @@ int main(int argc, char* argv[])
 	n=atoi(argv[2]);
 	is_prime = (bool*)malloc((n-l)*sizeof(bool));
 	data = (int*)malloc((n-l)*sizeof(int));
+//	MPI_Send(is_prime,n-l,MPI_INT,1,0,MPI_COMM_WORLD);
+//	MPI_Send(data,n-l,MPI_INT,1,0,MPI_COMM_WORLD);
 
     }
-
+	MPI_Barrier(MPI_COMM_WORLD);
     MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);   
     MPI_Bcast(&l, 1, MPI_INT, 0, MPI_COMM_WORLD);   
     if(myrank != 0)
     {
 	is_prime = (bool*)malloc((n-l)*sizeof(bool));
 	data = (int*)malloc((n-l)*sizeof(int));
+//	MPI_Recv(is_prime,n-l,MPI_INT,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+//	MPI_Recv(data,n-l,MPI_INT,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 
     }
-    MPI_Bcast(is_prime,n-l,MPI_INT,0,MPI_COMM_WORLD);
+    MPI_Bcast(is_prime,n-l,MPI_C_BOOL,0,MPI_COMM_WORLD);
     MPI_Bcast(data,n-l,MPI_INT,0,MPI_COMM_WORLD);
 
     start_time= MPI_Wtime();    
@@ -167,15 +173,20 @@ int main(int argc, char* argv[])
     for (i = begin; i < end; i++)
 
 	if(is_prime[i])
+	{
 	    fprintf(fp, "%d ", i);
-
+	    mycount++;
+	}
+	MPI_Reduce(&mycount,&totalcount,1,MPI_INT,MPI_SUM,0,MPI_COMM_WORLD);
     if(myrank==0)
-	fprintf(time_stats,"%d %f %f",task_num,total_time,max_time);
+    {
+	printf("Total found %d prime numbers\n",totalcount);
+	fprintf(time_stats,"%d %f %f\n",task_num,total_time,max_time);
+    }
     fclose(fp);
     fclose(time_stats);
     free(data);
     free(is_prime);
-
     MPI_Finalize();
 
     return 0;
