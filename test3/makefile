@@ -1,4 +1,4 @@
-num = 1 2 4 8 16
+num = 1 2 4 6 8 10 12 14 16
 begin = 1
 end = 100000000
 dst = primes.txt

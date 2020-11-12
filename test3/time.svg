@@ -100,14 +100,16 @@
 	<g transform="translate(507.9,76.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text><tspan>total time</tspan></text>
 	</g>
-	<path  d='M516.2,72.1 L558.4,72.1 M103.3,160.5 L134.8,118.6 L197.7,118.6 L323.5,113.6 L575.0,84.3  h0.01'/></g>
+	<path  d='M516.2,72.1 L558.4,72.1 M103.3,161.6 L134.8,122.2 L197.7,121.7 L260.6,116.7 L323.5,113.7 L386.3,110.5 
+		L449.2,109.3 L512.1,102.7 L575.0,94.9  h0.01'/></g>
 	</g>
 	<g id="gnuplot_plot_2" ><title>gnuplot_plot_2</title>
 <g style="fill:none; color:green; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<g transform="translate(507.9,94.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
 		<text><tspan>max time</tspan></text>
 	</g>
-	<path  d='M516.2,90.1 L558.4,90.1 M103.3,160.5 L134.8,280.5 L197.7,361.4 L323.5,401.3 L575.0,420.0  h0.01'/></g>
+	<path  d='M516.2,90.1 L558.4,90.1 M103.3,161.6 L134.8,282.3 L197.7,362.2 L260.6,388.1 L323.5,401.3 L386.3,409.2 
+		L449.2,414.6 L512.1,418.1 L575.0,420.7  h0.01'/></g>
 	</g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<path stroke='black'  d='M71.9,54.1 L71.9,442.4 L575.0,442.4 L575.0,54.1 L71.9,54.1 Z  h0.01'/></g>
