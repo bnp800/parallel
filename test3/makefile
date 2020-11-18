@@ -19,14 +19,22 @@ run: prime
 prime: prime.c
 	mpicc prime.c -o prime -lm
 
+report_pthread: run_pthread draw
+
 pthread: prime_p.cpp
 	g++ prime_p.cpp -o pthread -lpthread 
+
+run_pthread: pthread
+	for n in $(num); do \
+	    ./pthread $$n $(begin) $(end); \
+	done
+
 	
 clean:
 	rm primes.txt
 	rm time.dat
-	rm pthread*
 	rm prime
 	rm time.svg
-
+clean_pthread:
+	rm pthread*
 

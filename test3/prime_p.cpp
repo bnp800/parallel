@@ -35,8 +35,11 @@ int main(int argc,char* argv[])
     data = new int [end-begin];
     int partion_size = (int)ceil((end - begin) * 1. / num);
     pthread_t tids[num];
+    clock_t total_begin = clock();
+
     for(int i = 0;i < end;i++)
 	is_prime[i] = true;
+
     for(int j = 2;j < partion_size && j * j < end;j++)
     {
 	if(is_prime[j])
@@ -52,19 +55,22 @@ int main(int argc,char* argv[])
 		    td[i].start = 2;
 		if(td[i].end > end + 1)
 		    td[i].end = end + 1;
+
     begintime = clock();
 		int ret = pthread_create(&tids[i],NULL,primes,(void*) &td[i]);
     endtime = clock();
+
     double mytime = (double)(endtime - begintime) / CLOCKS_PER_SEC;
-    totaltime += mytime;
     if(mytime > maxtime)
 	maxtime = mytime;
+
 		if(ret)
 		{
 		    cerr << "Error create thread:" << ret << endl;
 		    exit(-1);
 		}
 	    }
+
 	    for(int l = 1;l < num;l++){
 		int rc = pthread_join(tids[l],NULL);
 		if(rc)
@@ -76,10 +82,18 @@ int main(int argc,char* argv[])
 	}
     }
 
+    clock_t total_end = clock();
+    totaltime = (double)(total_end - total_begin) / CLOCKS_PER_SEC;
+
+    if(num == 1)
+	maxtime = totaltime;
+
     int count = 0;
     ofstream out,time;
     out.open("primes.txt",ios::out);
     time.open("pthread_time.dat",ios::out | ios::app);
+    if(begin < 2)
+	begin = 2;
     for(int i = begin;i < end;i++)
     {
 	if(is_prime[i])
@@ -89,11 +103,12 @@ int main(int argc,char* argv[])
 	}
     }
     time << num << " " << totaltime << " " << maxtime << endl;
+
     cout << "Total found " << count << " prime numbers" << endl;
+
     out.close();
     time.close();
     delete [] is_prime;
     delete [] data;
     pthread_exit(NULL);
-    // return 0;
 }
