@@ -18,6 +18,10 @@ run: prime
 	mpirun -np 4 ./prime $(begin) $(end) primes.txt
 prime: prime.c
 	mpicc prime.c -o prime -lm
+
+pthread: prime_p.cpp
+	g++ prime_p.cpp -o pthread -lpthread
+	
 clean:
 	rm primes.txt
 	rm time.dat

@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
   MPI_Bcast(data, n - l, MPI_INT, 0, MPI_COMM_WORLD);
 
   start_time = MPI_Wtime();
-  partion_size = (int)ceil(n * 1.0 / task_num);
+  partion_size = (int)ceil((n-l) * 1.0 / task_num);
   begin = myrank * partion_size;
   end = (myrank + 1) * partion_size;
 
@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
   int i, k;
   k = 0;
 
-  for (i = begin; i < end; i++)
+  for (i = 0; i < end; i++)
     is_prime[i] = true;
   if (myrank == 0)
   {
