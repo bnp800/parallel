@@ -3,5 +3,5 @@ set output "time.svg"
 set title "pthread_time"
 set ylabel 'time(s)'
 set xlabel 'number of process'
-plot 'pthread_time.dat' u 1:2 title 'total time' with line,'time.dat' u 1:3  title 'max time' w l 
+plot 'pthread_time.dat' u 1:2 title 'total time' with line,'pthread_time.dat' u 1:3  title 'max time' w l 
 
