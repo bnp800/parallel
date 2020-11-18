@@ -20,11 +20,13 @@ prime: prime.c
 	mpicc prime.c -o prime -lm
 
 pthread: prime_p.cpp
-	g++ prime_p.cpp -o pthread -lpthread
+	g++ prime_p.cpp -o pthread -lpthread 
 	
 clean:
 	rm primes.txt
 	rm time.dat
+	rm pthread*
 	rm prime
 	rm time.svg
+
 
