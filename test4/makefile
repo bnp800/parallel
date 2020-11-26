@@ -5,7 +5,7 @@ main: main.cpp
 	mpic++ main.cpp ../test1/matrix.cpp -o main
 
 run: main
-	mpirun -np 4 ./main a.bin b.bin
+	mpirun -np 4 ./main a.bin b.bin c.bin
 
 generator: 
 	g++ generateMatrix.cpp -o generator
