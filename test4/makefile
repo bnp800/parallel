@@ -1,6 +1,8 @@
 
 
 
+all: generate run
+
 main: main.cpp
 	mpic++ main.cpp ../test1/matrix.cpp -o main
 

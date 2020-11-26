@@ -30,8 +30,10 @@ int main(int argc,char* argv[])
     if(endcol > a.size_y -1)
 	endcol = a.size_x -1;
     for(int i = 0;i < a.size_y;i++)
+{
 	d[i] = 0;
-
+	c[i] = 0;
+}
 //    cout << "Begin" << endl;
     if(endrow - startrow + 1 > 0)
 	for(int i = startrow;i <= endrow;i++)
