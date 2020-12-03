@@ -39,9 +39,11 @@ int main(int argc,char* argv[])
 	endcol = a.size_y -1;
     for(int i = 0;i < a.size_y;i++)
 {
+    	in.read((char*)&b[i],sizeof(double));
 	d[i] = 0;
 	c[i] = 0;
 }
+in.close();
 //    cout << "Begin" << endl;
     if(endrow - startrow + 1 > 0)
 	for(int i = startrow;i <= endrow;i++)
