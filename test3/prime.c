@@ -33,16 +33,16 @@ int main(int argc, char* argv[])
   {
     l = atoi(argv[1]);
     n = atoi(argv[2]);
-    is_prime = (bool*)malloc((n - l) * sizeof(bool));
-    data = (int*)malloc((n - l) * sizeof(int));
+    is_prime = (bool*)malloc(n * sizeof(bool));
+    data = (int*)malloc(n * sizeof(int));
   }
   MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Bcast(&l, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
   if (myrank != 0) 
   {
-    is_prime = (bool*)malloc((n - l) * sizeof(bool));
-    data = (int*)malloc((n - l) * sizeof(int));
+    is_prime = (bool*)malloc(n * sizeof(bool));
+    data = (int*)malloc(n * sizeof(int));
   }
 
   MPI_Bcast(is_prime, n - l, MPI_C_BOOL, 0, MPI_COMM_WORLD);

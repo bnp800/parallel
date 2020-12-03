@@ -32,8 +32,8 @@ int main(int argc,char* argv[])
     int num = atoi(argv[1]),begin = atoi(argv[2]),end = atoi(argv[3]);
     clock_t begintime,endtime;
     struct thread_data td[num];
-    is_prime = new bool [end-begin];
-    data = new int [end-begin];
+    is_prime = new bool [end];
+    data = new int [end];
     int partion_size = (int)ceil((end - begin) * 1. / num);
     pthread_t tids[num];
     clock_t total_begin = clock();
@@ -91,7 +91,7 @@ int main(int argc,char* argv[])
 
     int count = 0;
     ofstream out,time;
-    out.open(argv[4],ios::out);
+    out.open("primes_p.txt",ios::out);
     time.open("pthread_time.dat",ios::out | ios::app);
     if(begin < 2)
 	begin = 2;
