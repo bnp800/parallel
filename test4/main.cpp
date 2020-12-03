@@ -11,10 +11,18 @@ int main(int argc,char* argv[])
     int np,rank;
     MPI_Comm_size(MPI_COMM_WORLD,&np);
     MPI_Comm_rank(MPI_COMM_WORLD,&rank);
-    mat_d a,b;
-    double *c,*d;
+    mat_d a;
+    double *c,*d,*b;
     rff_d(argv[1],a);
-    rff_d(argv[2],b);
+   // rff_d(argv[2],b);
+    ifstream in(argv[2]);
+    char type;
+    int b_size_x,b_size_y;
+    in.read((char*)&type,sizeof(char));
+    in.read((char*)&b_size_x,sizeof(int));
+    in.read((char*)&b_size_y,sizeof(int));
+    b = new double [b_size_x];
+  //  cout << b_size_x << " " << b.size_y << endl;
     c = new double [a.size_y];
     d = new double [a.size_y];
     int nrow = a.size_x/np;
@@ -28,7 +36,7 @@ int main(int argc,char* argv[])
     if(endrow > a.size_x-1) 
 	endrow = a.size_x -1;
     if(endcol > a.size_y -1)
-	endcol = a.size_x -1;
+	endcol = a.size_y -1;
     for(int i = 0;i < a.size_y;i++)
 {
 	d[i] = 0;
@@ -40,7 +48,7 @@ int main(int argc,char* argv[])
 	{
 	    double sum = 0;
 	    for(int j = 0;j < a.size_y;j++)
-		sum += a.elem[i][j] * b.elem[0][j];
+		sum += a.elem[i][j] * b[j];
 	    c[i-startrow] = sum;
 	}
   //  cout << "Row" << endl;
@@ -48,7 +56,7 @@ int main(int argc,char* argv[])
     	for(int j = startcol;j <= endcol;j++)
 	{
 	    for(int i = 0;i < a.size_x;i++)
-		d[i-startcol] += a.elem[i][j] * b.elem[0][j];
+		d[i-startcol] += a.elem[i][j] * b[j];
 	   // d[j-startcol] = sum;
 	}
     if(rank != 0)
@@ -96,7 +104,7 @@ int main(int argc,char* argv[])
     out.close();
     }
     FREE(a);
-    FREE(b);
+    delete [] b;
     delete [] c;
     delete [] d;
     MPI_Finalize();

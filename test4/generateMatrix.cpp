@@ -15,7 +15,7 @@ int main(int argc,char* argv[])
 	srand(seed);
 	int size_x = N;
 	int size_y = M;
-	int size_b = 1;
+	int size_b = M/M;
 	char c = argv[3][0];
 	outfile.write((char*)&c,sizeof(char));
 	outfile.write((char*)&size_x,sizeof(int));

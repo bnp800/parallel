@@ -4,7 +4,7 @@
 all: generate run
 
 main: main.cpp
-	mpic++ main.cpp ../test1/matrix.cpp -o main
+	mpic++ main.cpp ../test1/matrix.cpp -o main -g -fsanitize=address
 
 run: main
 	mpirun -np 4 ./main a.bin b.bin c.bin
