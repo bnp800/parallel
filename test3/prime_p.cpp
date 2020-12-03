@@ -91,7 +91,7 @@ int main(int argc,char* argv[])
 
     int count = 0;
     ofstream out,time;
-    out.open("primes.txt",ios::out);
+    out.open(argv[4],ios::out);
     time.open("pthread_time.dat",ios::out | ios::app);
     if(begin < 2)
 	begin = 2;
