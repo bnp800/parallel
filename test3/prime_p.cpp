@@ -25,6 +25,7 @@ void* primes(void *ptr)
 	pthread_exit(NULL);
     for(int i = newbegin;i < my_data->end;i += my_data->num)
 	is_prime[i] = false;
+    pthread_exit(NULL);
 }
 int main(int argc,char* argv[])
 {
@@ -104,7 +105,7 @@ int main(int argc,char* argv[])
     }
     time << num << " " << totaltime << " " << maxtime << endl;
 
-    cout << "Total found " << count << " prime numbers" << endl;
+    cout << count << endl;
 
     out.close();
     time.close();

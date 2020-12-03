@@ -131,7 +131,7 @@ int main(int argc, char* argv[])
 
   if (myrank == 0)
   {
-    printf("Total found %d prime numbers\n", totalcount);
+    printf("%d\n", totalcount);
     fprintf(time_stats, "%d %f %f\n", task_num, total_time, max_time);
   }
 
