@@ -34,7 +34,7 @@ int main(int argc,char* argv[])
     struct thread_data td[num];
     is_prime = new bool [end];
     data = new int [end];
-    int partion_size = (int)ceil((end - begin) * 1. / num);
+    int partion_size = (int)ceil(end * 1. / num);
     pthread_t tids[num];
     clock_t total_begin = clock();
 

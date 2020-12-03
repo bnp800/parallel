@@ -33,23 +33,23 @@ int main(int argc, char* argv[])
   {
     l = atoi(argv[1]);
     n = atoi(argv[2]);
-    is_prime = (bool*)malloc(n * sizeof(bool));
-    data = (int*)malloc(n * sizeof(int));
+    is_prime = (bool*)malloc(n+1 * sizeof(bool));
+    data = (int*)malloc(n+1 * sizeof(int));
   }
   MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Bcast(&l, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
   if (myrank != 0) 
   {
-    is_prime = (bool*)malloc(n * sizeof(bool));
-    data = (int*)malloc(n * sizeof(int));
+    is_prime = (bool*)malloc(n+1 * sizeof(bool));
+    data = (int*)malloc(n+1 * sizeof(int));
   }
 
-  MPI_Bcast(is_prime, n - l, MPI_C_BOOL, 0, MPI_COMM_WORLD);
-  MPI_Bcast(data, n - l, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(is_prime,n , MPI_C_BOOL, 0, MPI_COMM_WORLD);
+  MPI_Bcast(data, n , MPI_INT, 0, MPI_COMM_WORLD);
 
   start_time = MPI_Wtime();
-  partion_size = (int)ceil((n-l) * 1.0 / task_num);
+  partion_size = (int)ceil(n * 1.0 / task_num);
   begin = myrank * partion_size;
   end = (myrank + 1) * partion_size;
 
@@ -58,6 +58,7 @@ int main(int argc, char* argv[])
   if (end > n + 1)
     end = n + 1;
 
+  printf("%d %d %d\n",begin,end,myrank);
   int i, k;
   k = 0;
 
