@@ -41,8 +41,8 @@ int main(int argc, char* argv[])
 
   if (myrank != 0) 
   {
-    is_prime = (bool*)malloc(n+1 * sizeof(bool));
-    data = (int*)malloc(n+1 * sizeof(int));
+    is_prime = (bool*)malloc(n * sizeof(bool));
+    data = (int*)malloc(n * sizeof(int));
   }
 
   MPI_Bcast(is_prime,n , MPI_C_BOOL, 0, MPI_COMM_WORLD);
@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
   if (end > n + 1)
     end = n + 1;
 
-  printf("%d %d %d\n",begin,end,myrank);
+  //printf("%d %d %d\n",begin,end,myrank);
   int i, k;
   k = 0;
 
