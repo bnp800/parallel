@@ -67,6 +67,7 @@ int main(int argc, char* argv[])
   if (myrank == 0)
   {
     int j;
+    printf("%d\n",partion_size);
     for (i = 2; i < partion_size && i * i < n; i++)
     {
       if (is_prime[i])

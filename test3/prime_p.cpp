@@ -34,7 +34,8 @@ int main(int argc,char* argv[])
     struct thread_data td[num];
     is_prime = new bool [end];
     data = new int [end];
-    int partion_size = (int)ceil(end * 1. / num);
+    int partion_size = (int)ceil((end) * 1. / num);
+    cout << partion_size << endl;
     pthread_t tids[num];
     clock_t total_begin = clock();
 
@@ -45,7 +46,7 @@ int main(int argc,char* argv[])
     {
 	if(is_prime[j])
 	{
-	    for(int k = j + j;k <= partion_size;k+=j)
+	    for(int k = j + j;k < partion_size;k+=j)
 		is_prime[k] = false;
 	    for(int i = 1;i < num;i++)
 	    {

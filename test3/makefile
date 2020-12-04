@@ -17,7 +17,7 @@ draw: plot.p
 run: prime
 	mpirun -np 4 ./prime $(begin) $(end) primes.txt
 prime: prime.c
-	mpicc prime.c -o prime -lm
+	mpicc prime.c -o prime -lm -g -fsanitize=address
 
 report_pthread: run_pthread draw
 
