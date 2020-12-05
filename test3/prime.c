@@ -20,7 +20,6 @@ int main(int argc, char* argv[])
 
   MPI_Init(&argc, &argv);
   MPI_Comm_size(MPI_COMM_WORLD, &task_num);
-
   MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
 
   if (argc != 4)
@@ -67,7 +66,6 @@ int main(int argc, char* argv[])
   if (myrank == 0)
   {
     int j;
-    printf("%d\n",partion_size);
     for (i = 2; /*i < partion_size && */i * i < n; i++)
     {
       if (is_prime[i])
