@@ -24,6 +24,7 @@ void* primes(void *ptr)
     if(newbegin > my_data->end)
 	pthread_exit(NULL);
     for(int i = newbegin;i < my_data->end;i += my_data->num)
+	if(i != my_data->num)
 	is_prime[i] = false;
     pthread_exit(NULL);
 }
@@ -33,16 +34,14 @@ int main(int argc,char* argv[])
     clock_t begintime,endtime;
     struct thread_data td[num];
     is_prime = new bool [end];
-    data = new int [end];
     int partion_size = (int)ceil((end) * 1. / num);
-    cout << partion_size << endl;
     pthread_t tids[num];
     clock_t total_begin = clock();
 
     for(int i = 0;i < end;i++)
 	is_prime[i] = true;
 
-    for(int j = 2;j < partion_size && j * j < end;j++)
+    for(int j = 2; j * j < end;j++)
     {
 	if(is_prime[j])
 	{

@@ -68,11 +68,11 @@ int main(int argc, char* argv[])
   {
     int j;
     printf("%d\n",partion_size);
-    for (i = 2; i < partion_size && i * i < n; i++)
+    for (i = 2; /*i < partion_size && */i * i < n; i++)
     {
       if (is_prime[i])
       {
-        for (j = i * i; j < partion_size; j = j + i)
+        for (j = i + i; j < partion_size; j = j + i)
           is_prime[j] = false;
 
         data[k] = i;
@@ -101,6 +101,7 @@ int main(int argc, char* argv[])
         break;
 
       for (i = new_begin; i < end; i += data[k])
+	  if(i != data[k])
         is_prime[i] = false;
 
       k++;
