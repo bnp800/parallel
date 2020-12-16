@@ -1,6 +1,6 @@
 num = 1 2 4 6 8 10 12 14 16
-begin = 1
-end = 100000000
+begin = 2
+end = 100
 dst = primes.txt
 all: prime run
 
@@ -15,7 +15,7 @@ draw: plot.p
 	gnuplot plot.p
 
 run: prime
-	mpirun -np 4 ./prime $(begin) $(end) primes.txt
+	mpirun -np 16 ./prime $(begin) $(end) primes.txt
 prime: prime.c
 	mpicc prime.c -o prime -lm -g -fsanitize=address
 
