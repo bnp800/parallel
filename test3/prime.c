@@ -40,35 +40,39 @@ int main(int argc, char* argv[])
 	if(myrank == task_num - 1)
 		end = end_g;
 	int length = end - begin;
-	int offset[task_num],count[task_num];
+	//int offset[task_num],count[task_num];
 	int i,k,root = floor(sqrt(end_g));
-	MPI_Allgather(&length,1,MPI_INT,count,1,MPI_INT,MPI_COMM_WORLD);
-	if(myrank == 0)
-	{
-		for(i = 0;i < task_num;i++)
-			for(offset[0] = 0,i = 1;i < task_num;offset[i] = offset[i-1] + count[i-1],i++);
-	}
-	MPI_Bcast(offset,task_num,MPI_INT,0,MPI_COMM_WORLD);
+	//MPI_Allgather(&length,1,MPI_INT,count,1,MPI_INT,MPI_COMM_WORLD);
+	//if(myrank == 0)
+	//{
+	//	for(i = 0;i < task_num;i++)
+	//		for(offset[0] = 0,i = 1;i < task_num;offset[i] = offset[i-1] + count[i-1],i++);
+	//}
+	//MPI_Bcast(offset,task_num,MPI_INT,0,MPI_COMM_WORLD);
 	
-	global_prime = (bool*)malloc((end_g-begin_g) * sizeof(bool));
+	//global_prime = (bool*)malloc((end_g-begin_g) * sizeof(bool));
 	local_prime = (bool*)malloc(length * sizeof(bool));
 	is_prime = (bool*)malloc(root * sizeof(bool));
-	MPI_Bcast(global_prime,end_g-begin_g,MPI_C_BOOL,0,MPI_COMM_WORLD);
-	MPI_Bcast(is_prime,root,MPI_C_BOOL,0,MPI_COMM_WORLD);
+	//MPI_Bcast(global_prime,end_g-begin_g,MPI_C_BOOL,0,MPI_COMM_WORLD);
+	//MPI_Bcast(is_prime,root,MPI_C_BOOL,0,MPI_COMM_WORLD);
 	for(int i = 2;i < root;i++)
 	{
 		if((i % 2) == 0)
 			is_prime[i] = false;
 		else 
 			is_prime[i] = true;
-		is_prime[2] = true;
 	}
-	for(int i = 0;i < end_g - begin_g;i++)
-		global_prime[i] = true;
-	MPI_Bcast(global_prime,end_g-begin_g,MPI_C_BOOL,0,MPI_COMM_WORLD);
-	MPI_Bcast(is_prime,root,MPI_C_BOOL,0,MPI_COMM_WORLD);
+		is_prime[2] = true;
+	//for(int i = 0;i < end_g - begin_g;i++)
+		//global_prime[i] = true;
+	for(int i = 0;i < length;i++)
+		local_prime[i]=true;
+	//多余的广播操作，需要移除。
+	//MPI_Bcast(global_prime,end_g-begin_g,MPI_C_BOOL,0,MPI_COMM_WORLD);
+	//MPI_Bcast(is_prime,root,MPI_C_BOOL,0,MPI_COMM_WORLD);
 	printf("Process %d: length:%d offset:%d begin:%d end:%d\n",myrank,count[myrank],offset[myrank],begin,end);
-	MPI_Scatterv(global_prime,count,offset,MPI_C_BOOL,local_prime,count[myrank],MPI_C_BOOL,0,MPI_COMM_WORLD);
+	//此操作亦为多余。
+	//MPI_Scatterv(global_prime,count,offset,MPI_C_BOOL,local_prime,count[myrank],MPI_C_BOOL,0,MPI_COMM_WORLD);
 	start_time = MPI_Wtime();
 	if (myrank == 0)
 	{
@@ -86,6 +90,7 @@ int main(int argc, char* argv[])
 			}
 		}
 		i = 0;
+		//先计算完素数，组成数组，再进行广播。
 		MPI_Bcast(&i, 1, MPI_INT, 0, MPI_COMM_WORLD);
 	}
 
@@ -129,7 +134,7 @@ int main(int argc, char* argv[])
 			if(global_prime[i - begin_g])
 			{
 				totalcount++;
-			//	fprintf(fp,"%d ",i + begin_g);
+			//	fprintf(fp,"%d ",i);
 				printf("%d ",i);
 			}
 		}

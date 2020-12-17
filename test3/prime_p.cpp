@@ -16,7 +16,6 @@ struct thread_data
 	//bool *num;
 	int root;
 	int offset;
-	int num;
 };
 void* primes(void *ptr)
 {
@@ -24,18 +23,18 @@ void* primes(void *ptr)
 	my_data = (struct thread_data*)ptr;
 	int j;
 	//cout << my_data->root << endl;
-	/*for(j = 2;j < my_data->root;j++)
+	for(j = 2;j < my_data->root;j++)
 	{
-			cout << j << endl;
+			cout << "prime in thread:" << j << endl;
 		if(is_prime[j])
-		{*/
-			int newbegin = my_data->start + (my_data->num - my_data->start % my_data->num) % my_data->num;
+		{
+			int newbegin = my_data->start + (j - my_data->start % j) % j;
 			if(newbegin > my_data->end)
 				pthread_exit(NULL);
-			//if(newbegin == j)
-			//	newbegin = j+j;
+			if(newbegin == j)
+				newbegin = j+j;
 			cout <<"newbegin: " <<newbegin <<" start: "<<my_data->start << " end: " << my_data->end << endl;
-			for(int i = newbegin;i < my_data->end;i += my_data->num)
+			for(int i = newbegin;i < my_data->end;i += j)
 				//if(i != j)
 				{
 					//cout <<"no prime: " << i << endl;
@@ -43,8 +42,8 @@ void* primes(void *ptr)
 				}
 
 			pthread_exit(NULL);
-		//}
-	//}
+		}
+	}
 }
 bool is_primef(int num)
 {
@@ -79,21 +78,21 @@ int main(int argc,char* argv[])
 	{
 		if(is_prime[j])
 		{
-			cout << j << endl;
+			cout << "Prime root: "<< j << endl;
 			for(int k = j+j;k < root;k+=j)
 			{
 		//		cout << k << endl;
 				is_prime[k] = false;
 			}
 		}
-	//}
+	}
 	for(int i = 0;i < num;i++)
 	{
-		td[i].num = j;
-		//td[i].root = root;
+		//td[i].num = is_prime;
+		td[i].root = root;
 		td[i].start = i * partion_size + begin;
 		td[i].end = (i+1) * partion_size + begin;
-		//td[i].offset = begin;
+		td[i].offset = begin;
 		if(i == num - 1)
 			td[i].end = end;
 		cout << "process: " << i << " start: " << td[i].start << " end: " << td[i].end << " root: " << root << endl;
@@ -112,7 +111,7 @@ int main(int argc,char* argv[])
 			exit(-1);
 		}
 	}
-}
+
 	for(int l = 0;l < num;l++){
 		int rc = pthread_join(tids[l],NULL);
 		if(rc)
@@ -142,7 +141,7 @@ if(num == 1)
 		cout << i + begin<< " ";
 	}
 }
-    cout << num << " " << totaltime << " " << maxtime << endl;
+//    cout << num << " " << totaltime << " " << maxtime << endl;
 
 cout <<endl<< count << endl;
 
