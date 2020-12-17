@@ -13,10 +13,11 @@ void Help(char* prog_name);
 int main(int argc, char* argv[])
 
 {
-	int  mycount = 0, totalcount = 0, myrank, task_num, partion_size, begin,end,begin_g =
-		1,end_g = 1;
-
+	int  mycount = 0, totalcount = 0, myrank, task_num, partion_size, begin,end,begin_g = 1,end_g = 1;
 	double start_time, end_time, total_time = 0, my_time = 0;
+	bool* global_prime;
+	//bool* local_prime;
+	bool* is_prime;
 
 	MPI_Init(&argc, &argv);
 	MPI_Comm_size(MPI_COMM_WORLD, &task_num);
@@ -30,6 +31,8 @@ int main(int argc, char* argv[])
 
 	begin_g = atoi(argv[1]);
 	end_g = atoi(argv[2]);
+	MPI_Bcast(&begin_g,1,MPI_INT,0,MPI_COMM_WORLD);
+	MPI_Bcast(&end_g,1,MPI_INT,0,MPI_COMM_WORLD);
 
 	partion_size = (int)floor((end_g-begin_g) * 1.0 / task_num);
 	begin = (myrank) * partion_size + begin_g;
@@ -38,7 +41,7 @@ int main(int argc, char* argv[])
 		end = end_g + 1;
 	int length = end - begin;
 	int offset[task_num],count[task_num];
-	int i,k;
+	int i,k,root = floor(sqrt(end_g));
 	MPI_Gather(&length,1,MPI_INT,count,1,MPI_INT,0,MPI_COMM_WORLD);
 	MPI_Bcast(count,task_num,MPI_INT,0,MPI_COMM_WORLD);
 	if(myrank == 0)
@@ -47,39 +50,49 @@ int main(int argc, char* argv[])
 			for(offset[0] = 0,i = 1;i < task_num;offset[i] = offset[i-1] + count[i-1],i++);
 	}
 	MPI_Bcast(offset,task_num,MPI_INT,0,MPI_COMM_WORLD);
-	bool global_prime[end_g-begin_g];
+	//bool global_prime[end_g-begin_g];
 	bool local_prime[length];
-	bool is_prime[end_g];
-	for(int i = 3;i < end_g;i++)
-	{
-		if((i % 2) == 0)
-			is_prime[i] = false;
-		else 
-			is_prime[i] = true;
-		is_prime[2] = true;
-	}
-	for(int i = begin_g;i < end_g;i++)
-		global_prime[i] = is_prime[i];
+	//bool is_prime[end_g];
+	
+	global_prime = (bool*)malloc((end_g-begin_g) * sizeof(bool));
+//	local_prime = (bool*)malloc(length * sizeof(bool));
+	is_prime = (bool*)malloc(root * sizeof(bool));
 	MPI_Bcast(global_prime,end_g-begin_g,MPI_C_BOOL,0,MPI_COMM_WORLD);
-	MPI_Bcast(is_prime,end_g,MPI_C_BOOL,0,MPI_COMM_WORLD);
-	//printf("Process %d: length:%d offset:%d begin:%d end:%d\n",myrank,count[myrank],offset[myrank],begin,end);
+//	MPI_Bcast(local_prime,count[myrank],MPI_C_BOOL,0,MPI_COMM_WORLD);
+	MPI_Bcast(is_prime,root,MPI_C_BOOL,0,MPI_COMM_WORLD);
+	for(int i = 2;i < root;i++)
+	{
+	/*	if((i % 2) == 0)
+			is_prime[i] = false;
+		else */
+			is_prime[i] = true;
+	//	is_prime[2] = true;
+	}
+	for(int i = 0;i < end_g - begin_g;i++)
+		global_prime[i] = true;
+	MPI_Bcast(global_prime,end_g-begin_g,MPI_C_BOOL,0,MPI_COMM_WORLD);
+	MPI_Bcast(is_prime,root,MPI_C_BOOL,0,MPI_COMM_WORLD);
+	printf("Process %d: length:%d offset:%d begin:%d end:%d\n",myrank,count[myrank],offset[myrank],begin,end);
 	MPI_Scatterv(global_prime,count,offset,MPI_C_BOOL,local_prime,count[myrank],MPI_C_BOOL,0,MPI_COMM_WORLD);
 	start_time = MPI_Wtime();
 	if (myrank == 0)
 	{
 		int j;
-		for (i = 2; i * i < end_g; i++)
+		for (i = 2; i  < root; i++)
 		{
 			if (is_prime[i])
 			{
-				for (j = 2 * i; j < end; j = j + i)
+				for (j = begin + (i - begin % i) % i; j < end; j = j + i)
+					if(j != i)
 					local_prime[j-begin] = false;
-
+				for(j = i+i;j < root;j += i)
+					is_prime[j] = false;
+			//	printf("Send %d\n",i);
 				MPI_Bcast(&i, 1, MPI_INT, 0, MPI_COMM_WORLD);
 			}
 		}
 		i = 0;
-		printf("FIN\n");
+		//printf("FIN\n");
 		MPI_Bcast(&i, 1, MPI_INT, 0, MPI_COMM_WORLD);
 	}
 
@@ -97,9 +110,8 @@ int main(int argc, char* argv[])
 
 			if (new_begin > end)
 				break;
-
+		//	printf("Recviev %d\n",i);
 			for (k = new_begin; k < end; k += i)
-				if(k != i)
 					local_prime[k-begin] = false;
 
 		}
@@ -120,13 +132,13 @@ int main(int argc, char* argv[])
 
 	if (myrank == 0)
 	{
-		for(int i = 0;i < end_g - begin_g;i++)
+		for(int i = begin_g;i < end_g;i++)
 		{
-			if(global_prime[i])
+			if(global_prime[i - begin_g])
 			{
 				totalcount++;
 				fprintf(fp,"%d ",i + begin_g);
-				//	printf("%d ",i+begin_g);
+			//	printf("%d ",i);
 			}
 		}
 		printf("%d\n", totalcount);
@@ -136,7 +148,9 @@ int main(int argc, char* argv[])
 	fclose(fp);
 	fclose(time_stats);
 	//	free(data);
-	//	free(is_prime);
+	free(is_prime);
+	free(global_prime);
+//	free(local_prime);
 	MPI_Finalize();
 	exit(0);
 }
