@@ -37,6 +37,11 @@ int main(int argc,char* argv[])
 	endrow = a.size_x -1;
     if(endcol > a.size_y -1)
 	endcol = a.size_y -1;
+MPI_Bcast(&startrow,1,MPI_INT,0,MPI_COMM_WORLD);
+MPI_Bcast(&endrow,1,MPI_INT,0,MPI_COMM_WORLD);
+MPI_Bcast(&startcol,1,MPI_INT,0,MPI_COMM_WORLD);
+MPI_Bcast(&endcol,1,MPI_INT,0,MPI_COMM_WORLD);
+
     for(int i = 0;i < a.size_y;i++)
 {
     	in.read((char*)&b[i],sizeof(double));
@@ -44,6 +49,7 @@ int main(int argc,char* argv[])
 	c[i] = 0;
 }
 in.close();
+MPI_Bcast(d,a.size_y,MPI_INT,0,MPI_COMM_WORLD);
 //    cout << "Begin" << endl;
     if(endrow - startrow + 1 > 0)
 	for(int i = startrow;i <= endrow;i++)

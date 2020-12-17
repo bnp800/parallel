@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 		global_prime[i] = true;
 	MPI_Bcast(global_prime,end_g-begin_g,MPI_C_BOOL,0,MPI_COMM_WORLD);
 	MPI_Bcast(is_prime,root,MPI_C_BOOL,0,MPI_COMM_WORLD);
-//	printf("Process %d: length:%d offset:%d begin:%d end:%d\n",myrank,count[myrank],offset[myrank],begin,end);
+	printf("Process %d: length:%d offset:%d begin:%d end:%d\n",myrank,count[myrank],offset[myrank],begin,end);
 	MPI_Scatterv(global_prime,count,offset,MPI_C_BOOL,local_prime,count[myrank],MPI_C_BOOL,0,MPI_COMM_WORLD);
 	start_time = MPI_Wtime();
 	if (myrank == 0)
@@ -129,8 +129,8 @@ int main(int argc, char* argv[])
 			if(global_prime[i - begin_g])
 			{
 				totalcount++;
-				fprintf(fp,"%d ",i + begin_g);
-			//	printf("%d ",i);
+			//	fprintf(fp,"%d ",i + begin_g);
+				printf("%d ",i);
 			}
 		}
 		printf("%d\n", totalcount);

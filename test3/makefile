@@ -22,7 +22,7 @@ prime: prime.c
 report_pthread: run_pthread draw
 
 pthread: prime_p.cpp
-	g++ prime_p.cpp -o pthread -lpthread 
+	g++ prime_p.cpp -o pthread -lpthread -fsanitize=address -g
 
 run_pthread: pthread
 	for n in $(num); do \
