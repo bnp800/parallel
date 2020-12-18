@@ -13,7 +13,6 @@ struct thread_data
 {
 	int start;
 	int end;
-	//bool *num;
 	int root;
 	int offset;
 };
@@ -22,28 +21,21 @@ void* primes(void *ptr)
 	struct thread_data *my_data;
 	my_data = (struct thread_data*)ptr;
 	int j;
-	//cout << my_data->root << endl;
 	for(j = 2;j < my_data->root;j++)
 	{
-			cout << "prime in thread:" << j << endl;
 		if(is_prime[j])
 		{
 			int newbegin = my_data->start + (j - my_data->start % j) % j;
-			if(newbegin > my_data->end)
-				pthread_exit(NULL);
 			if(newbegin == j)
 				newbegin = j+j;
-			cout <<"newbegin: " <<newbegin <<" start: "<<my_data->start << " end: " << my_data->end << endl;
 			for(int i = newbegin;i < my_data->end;i += j)
-				//if(i != j)
 				{
-					//cout <<"no prime: " << i << endl;
 					global_prime[i-my_data->offset] = false;
 				}
 
-			pthread_exit(NULL);
 		}
 	}
+			pthread_exit(NULL);
 }
 bool is_primef(int num)
 {
@@ -65,12 +57,12 @@ int main(int argc,char* argv[])
 
 	for(int i = 2;i < root;i++)
 	{
-	//	if((i % 2) != 0)
+		if((i % 2) != 0)
 			is_prime[i] = true;
-	//	if((i % 2) == 0)
-	//		is_prime[i] = false;
+		if((i % 2) == 0)
+			is_prime[i] = false;
 	}
-//	is_prime[2] = true;
+	is_prime[2] = true;
 	for(int i = 0;i < length;i++)
 		global_prime[i] = true;
 	clock_gettime(CLOCK_MONOTONIC,&total_begin);
@@ -78,24 +70,21 @@ int main(int argc,char* argv[])
 	{
 		if(is_prime[j])
 		{
-			cout << "Prime root: "<< j << endl;
 			for(int k = j+j;k < root;k+=j)
 			{
-		//		cout << k << endl;
 				is_prime[k] = false;
 			}
 		}
 	}
 	for(int i = 0;i < num;i++)
 	{
-		//td[i].num = is_prime;
 		td[i].root = root;
 		td[i].start = i * partion_size + begin;
 		td[i].end = (i+1) * partion_size + begin;
 		td[i].offset = begin;
 		if(i == num - 1)
 			td[i].end = end;
-		cout << "process: " << i << " start: " << td[i].start << " end: " << td[i].end << " root: " << root << endl;
+	//	cout << "process: " << i << " start: " << td[i].start << " end: " << td[i].end << " root: " << root << endl;
 		clock_gettime(CLOCK_MONOTONIC,&begintime);
 		int ret = pthread_create(&tids[i],NULL,primes,(void*) &td[i]);
 		clock_gettime(CLOCK_MONOTONIC,&endtime);
@@ -120,7 +109,6 @@ int main(int argc,char* argv[])
 			exit(-2);
 		}
 	}
-	// }
 
 
 clock_gettime(CLOCK_MONOTONIC,&total_end);
@@ -138,12 +126,12 @@ if(num == 1)
 	if(global_prime[i])
 	{
 		count++;
-		cout << i + begin<< " ";
+		out << i + begin<< " ";
 	}
 }
-//    cout << num << " " << totaltime << " " << maxtime << endl;
+    time << num << " " << totaltime << " " << maxtime << endl;
 
-cout <<endl<< count << endl;
+cout << count << endl;
 
 out.close();
 time.close();
