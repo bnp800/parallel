@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 {
 	int  mycount = 0, totalcount = 0, myrank, task_num, partion_size, begin,end,begin_g = 1,end_g = 1;
 	double start_time, end_time, total_time = 0, my_time = 0;
-	bool* global_prime;
+//	bool* global_prime;
 	bool* local_prime;
 	bool* is_prime;
 
@@ -40,10 +40,10 @@ int main(int argc, char* argv[])
 	int length = end - begin;
 	int i,k,root = floor(sqrt(end_g));
 
-	global_prime = (bool*)malloc((end_g-begin_g) * sizeof(bool));
+//	global_prime = (bool*)malloc((end_g-begin_g) * sizeof(bool));
 	local_prime = (bool*)malloc(length * sizeof(bool));
 	is_prime = (bool*)malloc(root * sizeof(bool));
-	MPI_Bcast(global_prime,end_g-begin_g,MPI_C_BOOL,0,MPI_COMM_WORLD);
+//	MPI_Bcast(global_prime,end_g-begin_g,MPI_C_BOOL,0,MPI_COMM_WORLD);
 	MPI_Bcast(is_prime,root,MPI_C_BOOL,0,MPI_COMM_WORLD);
 	for(i = 2;i < root;i++)
 	{
@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
 	fclose(time_stats);
 
 	free(is_prime);
-	free(global_prime);
+//	free(global_prime);
 	free(local_prime);
 	MPI_Finalize();
 	exit(0);
